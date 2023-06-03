@@ -19,7 +19,9 @@ stepFilter (Pandoc meta blks) =
     slideLvl =
         case lookupMeta (T.pack "slide-level") meta of
           Just (MetaString s) -> read $ T.unpack s
-          _ -> error "No slide-level defined"
+          Just (MetaInlines [Str s]) -> read $ T.unpack s
+          Just x -> error $ "Invalid slide-level: " ++ show x
+          Nothing -> error "No slide-level defined"
 
 data Slide
     = Slide Block [Block]

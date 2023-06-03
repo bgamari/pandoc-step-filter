@@ -10,8 +10,10 @@
       packages.default = self.packages."${system}".svg-filter;
       apps.default = self.apps.${system}.pandoc-step-filter;
       apps.pandoc-step-filter = "${self.packages."${system}".pandoc-step-filter}/bin/pandoc-step-filter";
+
       devShells.default =
         pkgs.mkShell {
+          packages = [ pkgs.haskellPackages.pandoc ];
           inputsFrom = [ self.packages.${system}.svg-filter ];
         };
     });
