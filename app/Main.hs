@@ -30,7 +30,7 @@ data Slide
 collectSlides :: Int -> [Block] -> [Slide]
 collectSlides slideLvl = go
   where
-    is_slide_hdr (Header lvl _ _) = lvl == slideLvl
+    is_slide_hdr (Header lvl _ _) = lvl <= slideLvl
     is_slide_hdr _ = False
 
     go [] = []
