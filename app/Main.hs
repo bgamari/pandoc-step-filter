@@ -65,24 +65,20 @@ stepContents :: Step -> [Block] -> [Block]
 stepContents step = walk f
   where
     f blk
-      | Just step' <- isStepDiv blk
-      , step /= step'
+      | Just steps <- isStepDiv blk
+      , not $ step `S.member` steps
       = Null
     f blk = blk
 
 slideSteps :: [Block] -> S.Set Step
-slideSteps = query f
-  where
-    f blk
-      | Just step <- isStepDiv blk = S.singleton step
-      | otherwise = mempty
+slideSteps = query $ maybe mempty id . isStepDiv
 
-isStepDiv :: Block -> Maybe Step
+isStepDiv :: Block -> Maybe (S.Set Step)
 isStepDiv (Div (_id, classes, _kvs) _contents) =
     case mapMaybe isStepClass classes of
-      [] -> Nothing
-      [step] -> Just step
-      _ -> error "multiple steps"
+      steps
+        | null steps -> Nothing
+        | otherwise -> Just (S.fromList steps)
 isStepDiv _ = Nothing
 
 newtype Step = Step Integer
