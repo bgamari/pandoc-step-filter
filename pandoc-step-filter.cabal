@@ -19,9 +19,9 @@ common warnings
 executable pandoc-step-filter
     import:           warnings
     main-is:          Main.hs
-    build-depends:    base ^>=4.16.4.0,
+    build-depends:    base >=4.16 && <4.20,
                       containers,
                       text,
-                      pandoc-types >=1.22 && <1.23
+                      pandoc-types >=1.22 && <1.24
     hs-source-dirs:   app
     default-language: Haskell2010
