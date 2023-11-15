@@ -62,13 +62,13 @@ filterSlide (Slide hdr contents)
 filterSlide slide = [slide]
 
 stepContents :: Step -> [Block] -> [Block]
-stepContents step = walk f
+stepContents step = walk (foldMap f)
   where
     f blk
       | Just steps <- isStepDiv blk
       , not $ step `S.member` steps
-      = Null
-    f blk = blk
+      = []
+    f blk = [blk]
 
 slideSteps :: [Block] -> S.Set Step
 slideSteps = query $ maybe mempty id . isStepDiv
